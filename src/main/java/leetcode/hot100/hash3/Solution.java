@@ -86,8 +86,34 @@ class Solution2 {
         return new ArrayList<>(map.values());
     }
 
+    public static List<List<String>> groupAnagrams2(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String str : strs) {
+            int[] counts = new int[26];
+            int length = str.length();
+            for (int i = 0; i < length; i++) {
+                counts[str.charAt(i) - 'a']++;
+            }
+            StringBuilder sb = new StringBuilder();
+            // 将 >0的字母拼接作为 Map 的 key
+            for (int i = 0; i < 26; i++) {
+                if (counts[i] > 0) {
+                    sb.append((char) (i + 'a'));
+                    sb.append(counts[i]);
+                }
+            }
+            String key = sb.toString();
+            List<String> list = map.getOrDefault(key, new ArrayList<>());
+            list.add(str);
+            map.put(key, list);
+        }
+        return new ArrayList<>(map.values());
+    }
+
+    // A 65 a97
     public static void main(String[] args) {
         String[] strs = new String[]{"eat", "tea", "tan", "ate", "nat", "bat"};
-        System.out.println(JSONUtil.toJsonStr(Solution2.groupAnagrams(strs)));
+//        System.out.println(JSONUtil.toJsonStr(Solution2.groupAnagrams(strs)));
+        System.out.println(JSONUtil.toJsonStr(Solution2.groupAnagrams2(strs)));
     }
 }
